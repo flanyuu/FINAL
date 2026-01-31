@@ -15,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.misLugares.casos_uso.RutasHelper;
-import com.google.android.gms.maps.model.LatLng;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -25,7 +23,6 @@ import com.example.misLugares.Aplicacion;
 import com.example.misLugares.LugaresBDAdapter;
 import com.example.misLugares.R;
 import com.example.misLugares.casos_uso.CasosUsoLugar;
-import com.example.misLugares.datos.RepositorioLugares;
 import com.example.misLugares.modelo.GeoPunto;
 import com.example.misLugares.modelo.Lugar;
 
@@ -33,7 +30,6 @@ import java.text.DateFormat;
 import java.util.Date;
 
 public class VistaLugarActivity extends AppCompatActivity {
-    //private RepositorioLugares lugares;
     private LugaresBDAdapter lugares;
     private CasosUsoLugar usoLugar;
     private int pos;
@@ -130,11 +126,7 @@ public class VistaLugarActivity extends AppCompatActivity {
             usoLugar.verMapa(lugar);
             return true;
         } else if (id == R.id.accion_trazar_ruta) {
-            // Trazar ruta simple
-            trazarRutaSimple();
-            return true;
-        } else if (id == R.id.accion_trazar_ruta) {
-            // Nueva funcionalidad: Trazar ruta
+            // Trazar ruta con línea de color
             trazarRuta();
             return true;
         } else if (id == R.id.accion_editar) {
@@ -181,28 +173,6 @@ public class VistaLugarActivity extends AppCompatActivity {
         // Lanzar la actividad de ruta
         Intent intent = new Intent(this, RutaActivity.class);
         intent.putExtra("pos", pos);
-        startActivity(intent);
-    }
-    // Trazar ruta simple usando MapaActivity existente
-    private void trazarRutaSimple() {
-        GeoPunto posicionActual = ((Aplicacion) getApplication()).posicionActual;
-
-        if (posicionActual == null || posicionActual.equals(GeoPunto.SIN_POSICION)) {
-            Toast.makeText(this, "No se pudo obtener tu ubicación actual",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (lugar.getPosicion() == null || lugar.getPosicion().equals(GeoPunto.SIN_POSICION)) {
-            Toast.makeText(this, "Este lugar no tiene coordenadas válidas",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        // Abrir MapaActivity con parámetro extra para dibujar ruta
-        Intent intent = new Intent(this, MapaActivity.class);
-        intent.putExtra("trazar_ruta", true);
-        intent.putExtra("pos_destino", pos);
         startActivity(intent);
     }
 
