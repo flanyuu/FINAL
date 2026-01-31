@@ -25,6 +25,10 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
+    // ⚠️ IMPORTANTE: Reemplaza este client ID con el correcto de tu google-services.json
+    // Búscalo en el objeto "oauth_client" donde "client_type": 3
+    private static final String WEB_CLIENT_ID = "165553765880-qli6evqbigiookjc2dal04v65dr084es.apps.googleusercontent.com";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +38,8 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // Configurar Google Sign-In
-        // IMPORTANTE: Usa el Web client ID de tu google-services.json
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("165553765880-uuguj5u80rc1075r826u1jh1l07rkf10.apps.googleusercontent.com")
+                .requestIdToken(WEB_CLIENT_ID)
                 .requestEmail()
                 .build();
 
@@ -49,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Verificar si el usuario ya inició sesión
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Log.d(TAG, "Usuario ya autenticado: " + currentUser.getEmail());
@@ -58,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        // Cerrar sesión antes de iniciar el flujo de login para asegurar una cuenta limpia
         mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -72,14 +73,14 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign-In exitoso, autenticar con Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d(TAG, "Google Sign-In exitoso: " + account.getEmail());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                // Google Sign-In falló
-                Log.e(TAG, "Google sign in failed", e);
-                Toast.makeText(this, "Error al iniciar sesión con Google: " + e.getStatusCode(),
+                Log.e(TAG, "Google sign in failed. Status code: " + e.getStatusCode(), e);
+                Toast.makeText(this,
+                        "Error al iniciar sesión: " + e.getStatusCode() + "\n" +
+                                "Verifica la configuración de Firebase",
                         Toast.LENGTH_LONG).show();
             }
         }
@@ -90,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Autenticación exitosa
                         Log.d(TAG, "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
@@ -99,11 +99,12 @@ public class LoginActivity extends AppCompatActivity {
                             irAPantallaPrincipal();
                         }
                     } else {
-                        // Autenticación falló
                         Log.e(TAG, "signInWithCredential:failure", task.getException());
-                        Toast.makeText(this, "Autenticación fallida: " +
-                                        (task.getException() != null ? task.getException().getMessage() : "Error desconocido"),
-                                Toast.LENGTH_LONG).show();
+                        String errorMsg = "Autenticación fallida";
+                        if (task.getException() != null) {
+                            errorMsg += ": " + task.getException().getMessage();
+                        }
+                        Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
                     }
                 });
     }

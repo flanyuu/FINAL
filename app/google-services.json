@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "165553765880-uuguj5u80rc1075r826u1jh1l07rkf10.apps.googleusercontent.com",
+          "client_id": "165553765880-trn63qk3r1c6gesem4eqrd1qo7ma502h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.misLugares",
+            "certificate_hash": "7eb332f950996ae20136c1ae7971c62b7ace0102"
+          }
+        },
+        {
+          "client_id": "165553765880-qli6evqbigiookjc2dal04v65dr084es.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "165553765880-uuguj5u80rc1075r826u1jh1l07rkf10.apps.googleusercontent.com",
+              "client_id": "165553765880-qli6evqbigiookjc2dal04v65dr084es.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
