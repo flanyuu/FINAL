@@ -13,12 +13,10 @@ import com.example.misLugares.Aplicacion;
 import com.example.misLugares.LugaresBDAdapter;
 import com.example.misLugares.R;
 import com.example.misLugares.casos_uso.CasosUsoLugar;
-import com.example.misLugares.datos.RepositorioLugares;
 import com.example.misLugares.modelo.Lugar;
 import com.example.misLugares.modelo.TipoLugar;
 
 public class EdicionLugarActivity extends AppCompatActivity {
-    //private RepositorioLugares lugares;
     private LugaresBDAdapter lugares;
     private CasosUsoLugar usoLugar;
     private int pos;
@@ -35,11 +33,11 @@ public class EdicionLugarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edicion_lugar);
         Bundle extras = getIntent().getExtras();
-        pos = extras.getInt("pos",0);
+        pos = extras.getInt("pos", 0);
         lugares = ((Aplicacion) getApplication()).lugares;
         usoLugar = new CasosUsoLugar(this, lugares);
         _id = extras.getInt("_id", -1);
-        if (_id!=-1) lugar = lugares.elemento(_id);
+        if (_id != -1) lugar = lugares.elemento(_id);
         else lugar = lugares.elementoPos(pos);
         actualizaVistas();
     }
@@ -53,7 +51,6 @@ public class EdicionLugarActivity extends AppCompatActivity {
                 simple_spinner_dropdown_item);
         tipo.setAdapter(adaptador);
         tipo.setSelection(lugar.getTipo().ordinal());
-        //tipo.setText(lugar.getTipo().getTexto());
         direccion = findViewById(R.id.direccion);
         direccion.setText(lugar.getDireccion());
         telefono = findViewById(R.id.telefono);
@@ -82,7 +79,6 @@ public class EdicionLugarActivity extends AppCompatActivity {
             lugar.setTelefono(Integer.parseInt(telefono.getText().toString()));
             lugar.setUrl(url.getText().toString());
             lugar.setComentario(comentario.getText().toString());
-            //usoLugar.guardar(pos, lugar);
             if (_id == -1) _id = lugares.getAdaptador().idPosition(pos);
             usoLugar.guardar(_id, lugar);
             finish();

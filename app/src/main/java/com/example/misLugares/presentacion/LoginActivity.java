@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
-    // ⚠️ IMPORTANTE: Reemplaza este client ID con el correcto de tu google-services.json
+    // IMPORTANTE: Reemplaza este client ID con el correcto de tu google-services.json
     // Búscalo en el objeto "oauth_client" donde "client_type": 3
     private static final String WEB_CLIENT_ID = "165553765880-qli6evqbigiookjc2dal04v65dr084es.apps.googleusercontent.com";
 
@@ -47,6 +47,10 @@ public class LoginActivity extends AppCompatActivity {
 
         Button btnSignIn = findViewById(R.id.btnGoogleSignIn);
         btnSignIn.setOnClickListener(v -> signIn());
+
+        // Botón de bypass
+        Button btnBypass = findViewById(R.id.btnBypass);
+        btnBypass.setOnClickListener(v -> bypassLogin());
     }
 
     @Override
@@ -78,10 +82,8 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 Log.e(TAG, "Google sign in failed. Status code: " + e.getStatusCode(), e);
-                Toast.makeText(this,
-                        "Error al iniciar sesión: " + e.getStatusCode() + "\n" +
-                                "Verifica la configuración de Firebase",
-                        Toast.LENGTH_LONG).show();
+                String mensaje = mensajeParaCodigo(e.getStatusCode());
+                Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -110,8 +112,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void irAPantallaPrincipal() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    /**
+     * Mensaje claro según código de error. Código 10 = DEVELOPER_ERROR (SHA-1, package name o OAuth).
+     */
+    private String mensajeParaCodigo(int statusCode) {
+        if (statusCode == 10) {
+            return "Error de configuración (código 10). Añade la huella SHA-1 de tu keystore en Firebase/Google Cloud Console " +
+                    "(Project settings → Your apps) y asegúrate de que el package name coincida. " +
+                    "Mientras tanto puedes usar \"Entrar sin cuenta\".";
+        }
+        return "Error al iniciar sesión: " + statusCode + ". Verifica la configuración de Firebase.";
+    }
+
+    /**
+     * Bypass para pruebas sin Google Sign-In.
+     */
+    private void bypassLogin() {
+        Log.d(TAG, "BYPASS ACTIVADO");
+        irAPantallaPrincipal();
     }
 }

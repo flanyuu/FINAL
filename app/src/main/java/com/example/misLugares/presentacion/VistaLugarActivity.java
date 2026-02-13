@@ -45,7 +45,7 @@ public class VistaLugarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vista_lugar);
         Bundle extras = getIntent().getExtras();
-        pos = extras.getInt("pos",0);
+        pos = extras.getInt("pos", 0);
         lugares = ((Aplicacion) getApplication()).lugares;
         id = lugares.getAdaptador().idPosition(pos);
         usoLugar = new CasosUsoLugar(this, lugares);
@@ -151,26 +151,20 @@ public class VistaLugarActivity extends AppCompatActivity {
     }
 
     /**
-     * Método para trazar la ruta hacia el lugar
+     * Trazar la ruta desde la ubicación actual hasta este lugar.
      */
     private void trazarRuta() {
         GeoPunto posicionActual = ((Aplicacion) getApplication()).posicionActual;
-
-        // Validar que tengamos ubicación actual
         if (posicionActual == null || posicionActual.equals(GeoPunto.SIN_POSICION)) {
             Toast.makeText(this, "No se pudo obtener tu ubicación actual. " +
                     "Asegúrate de tener activado el GPS.", Toast.LENGTH_LONG).show();
             return;
         }
-
-        // Validar que el lugar tenga coordenadas
         if (lugar.getPosicion() == null || lugar.getPosicion().equals(GeoPunto.SIN_POSICION)) {
             Toast.makeText(this, "Este lugar no tiene coordenadas válidas",
                     Toast.LENGTH_LONG).show();
             return;
         }
-
-        // Lanzar la actividad de ruta
         Intent intent = new Intent(this, RutaActivity.class);
         intent.putExtra("pos", pos);
         startActivity(intent);

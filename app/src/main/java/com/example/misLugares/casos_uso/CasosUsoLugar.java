@@ -25,7 +25,6 @@ import java.lang.reflect.Field;
 
 public class CasosUsoLugar {
     private Activity actividad;
-    //private RepositorioLugares lugares;
     private LugaresBDAdapter lugares;
     public CasosUsoLugar(Activity actividad, RepositorioLugares lugares) {
         this.actividad = actividad;
@@ -57,7 +56,6 @@ public class CasosUsoLugar {
         actividad.startActivity(i);
     }
     public void llamarTelefono(Lugar lugar) {
-        //actividad.startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + lugar.getTelefono())));
         actividad.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + lugar.getTelefono())));
     }
     public void verPgWeb(Lugar lugar){
@@ -72,16 +70,6 @@ public class CasosUsoLugar {
         actividad.startActivity(new Intent("android.intent.action.VIEW", uri));
     }
     public void ponerDeGaleria(int codigoSolicitud) {
-        /*String action;
-        if (Build.VERSION.SDK_INT >= 19) {
-            action = Intent.ACTION_OPEN_DOCUMENT;
-        } else {
-            action = Intent.ACTION_PICK;
-        }
-        Intent intent = new Intent(action, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        actividad.startActivityForResult(intent, codigoSolicitud);*/
         Intent intent;
 
         if (Build.VERSION.SDK_INT >= 19) {

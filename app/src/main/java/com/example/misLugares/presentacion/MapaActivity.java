@@ -13,7 +13,6 @@ import androidx.fragment.app.FragmentActivity;
 import com.example.misLugares.Aplicacion;
 import com.example.misLugares.LugaresBDAdapter;
 import com.example.misLugares.R;
-import com.example.misLugares.datos.RepositorioLugares;
 import com.example.misLugares.modelo.GeoPunto;
 import com.example.misLugares.modelo.Lugar;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,7 +26,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapaActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private GoogleMap mapa;
-    //private RepositorioLugares lugares;
     private LugaresBDAdapter lugares;
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

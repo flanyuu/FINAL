@@ -1,24 +1,20 @@
 package com.example.misLugares.presentacion;
 
 import android.app.AlertDialog;
-import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import com.example.misLugares.casos_uso.RutasHelper;
-import com.example.misLugares.AdaptadorLugares;
+
 import com.example.misLugares.Aplicacion;
 import com.example.misLugares.CasosUsoLocalizacion;
 import com.example.misLugares.LugaresBDAdapter;
 import com.example.misLugares.R;
 import com.example.misLugares.casos_uso.CasosUsoActividades;
 import com.example.misLugares.casos_uso.CasosUsoLugar;
-import com.example.misLugares.datos.LugaresBD;
-import com.example.misLugares.datos.RepositorioLugares;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,23 +23,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-
-import com.example.misLugares.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button bAcercaDe;
-    private Button bSalir;
-    //private RepositorioLugares lugares;
     private LugaresBDAdapter lugares;
     public AdaptadorLugaresBD adaptador;
     private CasosUsoLugar usoLugar;
     private CasosUsoActividades usoActividades;
-    private ActivityMainBinding binding;
     private RecyclerView recyclerView;
-   // public AdaptadorLugares adaptador;
     private static final int SOLICITUD_PERMISO_LOCALIZACION = 1;
     private CasosUsoLocalizacion usoLocalizacion;
     static final int RESULTADO_PREFERENCIAS = 0;
@@ -55,35 +43,19 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        
+        // Habilitar botón de retroceso para volver al menú principal
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();*/
-            usoLugar.nuevo();
-        });
+        fab.setOnClickListener(view -> usoLugar.nuevo());
 
         usoActividades = new CasosUsoActividades(this);
-        /*bAcercaDe = findViewById(R.id.button3);
-        bAcercaDe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //lanzarAcercaDe(null);
-                usoActividades.lanzarAcercaDe();
-            }
-        });
 
-        //bSalir = findViewById(R.id.button4);
-        bSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });*/
-        
         lugares = ((Aplicacion) getApplication()).lugares;
         usoLugar = new CasosUsoLugar(this, lugares);
-        //usoLugar.mostrar(pos);
 
         adaptador = ((Aplicacion) getApplication()).adaptador;
         recyclerView = findViewById(R.id.recyclerView);
@@ -98,6 +70,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         usoLocalizacion = new CasosUsoLocalizacion(this, SOLICITUD_PERMISO_LOCALIZACION);
+
+        // Botón Atrás del sistema: volver al menú en lugar de cerrar la app
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
     }
 
     public void lanzarAcercaDe(View view) {
@@ -126,8 +110,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void lanzarPreferencias(View view) {
         Intent i = new Intent(this, PreferenciasActivity.class);
-        //startActivity(i);
-        startActivityForResult(i,RESULTADO_PREFERENCIAS);
+        startActivityForResult(i, RESULTADO_PREFERENCIAS);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -137,12 +120,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == android.R.id.home) {
+            Intent intent = new Intent(this, MenuActivity.class);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            return true;
+        }
         if (id == R.id.action_settings) {
             lanzarPreferencias(null);
             return true;
         }
         if (id == R.id.acercaDe) {
-            //lanzarAcercaDe(null);
             usoActividades.lanzarAcercaDe();
             return true;
         }
@@ -153,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.menu_mapa) {
             Intent intent = new Intent(this, MapaActivity.class);
             startActivity(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -176,4 +166,5 @@ public class MainActivity extends AppCompatActivity {
             adaptador.notifyDataSetChanged();
         }
     }
+
 }

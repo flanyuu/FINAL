@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".presentacion.RutaPuntosActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Indica al menos punto A y punto B (puedes añadir más paradas)"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Punto A (origen)"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+        <Spinner
+            android:id="@+id/spinnerPuntoA"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp" />
+
+        <LinearLayout
+            android:id="@+id/containerParadas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Punto B (destino)"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp" />
+        <Spinner
+            android:id="@+id/spinnerPuntoB"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnAnadirParada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Añadir parada"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btnTrazarRuta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trazar ruta" />
+
+    </LinearLayout>
+</ScrollView>

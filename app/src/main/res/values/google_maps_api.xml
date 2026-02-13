@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBYA4hICrxfzA1-HJNWZKzmDyVXs7XXa90</string>
+    <!-- Misma clave del proyecto (mislugares-a73af) que usa Directions API -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBD5Lj82jqqYX0bSuhXPTLUs_fS7PY2ylQ</string>
 </resources>
