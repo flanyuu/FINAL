@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+*.osm.pbf
+graphhopper/*.osm.pbf
+graph-cache/

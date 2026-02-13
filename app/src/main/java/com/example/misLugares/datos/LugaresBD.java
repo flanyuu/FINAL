@@ -14,12 +14,14 @@ import com.example.misLugares.modelo.GeoPunto;
 import com.example.misLugares.modelo.Lugar;
 import com.example.misLugares.modelo.TipoLugar;
 
-//import java.sql.SQLException;
-
-public class LugaresBD extends SQLiteOpenHelper implements RepositorioLugares{
+public class LugaresBD extends SQLiteOpenHelper implements RepositorioLugares {
+    private static final int VERSION = 2;
     Context contexto;
     public LugaresBD(Context contexto) {
-        super(contexto, "lugares", null, 1);
+        this(contexto, "lugares");
+    }
+    public LugaresBD(Context contexto, String nombreBD) {
+        super(contexto, nombreBD, null, VERSION);
         this.contexto = contexto;
     }
     @Override
@@ -125,8 +127,7 @@ public class LugaresBD extends SQLiteOpenHelper implements RepositorioLugares{
         return lugar;
     }
     public Cursor extraeCursor() {
-        //String consulta = "SELECT * FROM lugares"; //
-        //String consulta = "SELECT * FROM lugares WHERE valoracion>2.0 ORDER BY valoracion DESC LIMIT 4";
+
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(contexto);
         String max = pref.getString("maximo","12");
         String consulta;

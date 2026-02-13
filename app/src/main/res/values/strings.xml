@@ -91,5 +91,24 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="rutas">Rutas</string>
+    <string name="nueva_ruta">Nueva ruta</string>
+    <string name="paradas_count">%1$d paradas</string>
+    <string name="crear_ruta">Crear ruta</string>
+    <string name="nombre_ruta">Nombre de la ruta</string>
+    <string name="guardar_ruta">Guardar ruta</string>
+    <string name="eliminar_ruta">Eliminar ruta</string>
+    <string name="eliminar_ruta_confirmar">¿Eliminar la ruta \"%1$s\"?</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="ruta_eliminada">Ruta eliminada</string>
+    <string name="distancia_km">%1$.1f km</string>
+    <string name="distancia_desconocida">— km</string>
+    <string name="modo_coche">Coche</string>
+    <string name="modo_a_pie">A pie</string>
+    <string name="modo_bici">Bici</string>
+    <string name="tipo_viaje">Tipo de viaje</string>
+    <string name="puntuar_ruta">Puntuar ruta</string>
+    <string name="tipo_transporte_ruta">Tipo de transporte de la ruta</string>
+    <string name="error_ruta_api_key">Clave de GraphHopper no configurada. En la raíz del proyecto abre o crea \"local.properties\" y añade: graphhopperApiKey=tu_clave (obtén una en graphhopper.com/dashboard). Luego: File → Sync Project with Gradle.</string>
 
 </resources>

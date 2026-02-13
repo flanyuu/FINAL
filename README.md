@@ -319,6 +319,13 @@ Android Studio las instala automáticamente.
 Si ocurre un error, usa:
 File -> Sync Project with Gradle Files.
 
+**Configurar API de rutas (GraphHopper).**
+Las rutas (coche, bici, a pie) usan la API de GraphHopper, que soporta senderos y distintos modos de transporte.
+1. Regístrate en https://graphhopper.com/dashboard y crea una API key.
+2. En la raíz del proyecto crea o edita `local.properties` y añade:
+   `graphhopperApiKey=TU_API_KEY_DE_GRAPHHOPPER`
+3. Sincroniza el proyecto con Gradle. La app usará esta clave para calcular rutas.
+
 
 **Ejecutar el proyecto (entorno local).**
   - Conectar un teléfono Android o iniciar un emulador.

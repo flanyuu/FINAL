@@ -1,6 +1,5 @@
 package com.example.misLugares;
 
-
 import android.os.Bundle;
 
 import androidx.preference.PreferenceFragmentCompat;

@@ -28,15 +28,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- MainActivity ahora es una actividad secundaria -->
+        <activity
+            android:name=".presentacion.MenuActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MisLugares.NoActionBar"/>
+
         <activity
             android:name=".presentacion.MainActivity"
             android:exported="false"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/Theme.MisLugares.NoActionBar"/>
+        <activity
+            android:name=".presentacion.RutasActivity"
+            android:exported="false"
+            android:label="@string/rutas"
+            android:theme="@style/Theme.MisLugares.NoActionBar"
+            android:parentActivityName=".presentacion.MenuActivity"/>
         <activity android:name=".presentacion.AcercaDeActivity"
             android:label="Acerca de ..."
-            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+            android:theme="@style/Theme.MisLugares"/>
         <activity
             android:name=".presentacion.VistaLugarActivity"
             android:label="Vista del lugar"
@@ -50,6 +61,14 @@
             android:theme="@style/Theme.MisLugares"/>
         <activity
             android:name=".presentacion.MapaActivity"
+            android:theme="@style/Theme.MisLugares"/>
+        <activity
+            android:name=".presentacion.CrearRutaActivity"
+            android:label="@string/crear_ruta"
+            android:theme="@style/Theme.MisLugares"/>
+        <activity
+            android:name=".presentacion.RutaPuntosActivity"
+            android:label="Puntos de la ruta"
             android:theme="@style/Theme.MisLugares"/>
         <activity
             android:name=".presentacion.RutaActivity"

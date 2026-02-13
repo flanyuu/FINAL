@@ -102,7 +102,7 @@ public class CasosUsoLocalizacion implements LocationListener {
     private void actualizaMejorLocaliz(Location localiz) {
         if (localiz != null && (mejorLoc == null
                 || localiz.getAccuracy() < 2*mejorLoc.getAccuracy() || localiz.getTime() - mejorLoc.getTime() > DOS_MINUTOS)) {
-            Log.d(TAG, "Nueva mejor localzación");
+            Log.d(TAG, "Nueva mejor localización");
             mejorLoc = localiz;
             posicionActual.setLatitud(localiz.getLatitude());
             posicionActual.setLongitud(localiz.getLongitude());
