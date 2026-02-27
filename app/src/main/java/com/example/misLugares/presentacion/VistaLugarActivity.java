@@ -37,6 +37,7 @@ public class VistaLugarActivity extends AppCompatActivity {
     private ImageView foto;
     private Uri uriUltimaFoto;
     private int id = -1;
+    private boolean soloLectura;
 
     final static int RESULTADO_GALERIA = 2;
     final static int RESULTADO_FOTO    = 3;
@@ -74,10 +75,19 @@ public class VistaLugarActivity extends AppCompatActivity {
 
         // Editar
         LinearLayout btnEditar = findViewById(R.id.btnEditar);
-        btnEditar.setOnClickListener(v -> usoLugar.editar(pos, RESULTADO_EDITAR));
-
         // Borrar
         LinearLayout btnBorrar = findViewById(R.id.btnBorrar);
+        boolean soloLectura = getIntent().getBooleanExtra("solo_lectura", false);
+        this.soloLectura = soloLectura;
+        if (soloLectura) {
+            btnEditar.setVisibility(View.GONE);
+            btnBorrar.setVisibility(View.GONE);
+        } else {
+            btnEditar.setVisibility(View.VISIBLE);
+            btnBorrar.setVisibility(View.VISIBLE);
+        }
+        btnEditar.setOnClickListener(v -> usoLugar.editar(pos, RESULTADO_EDITAR));
+
         btnBorrar.setOnClickListener(v ->
                 new AlertDialog.Builder(this)
                         .setTitle("Borrar lugar")
@@ -145,10 +155,15 @@ public class VistaLugarActivity extends AppCompatActivity {
         RatingBar valoracion = findViewById(R.id.valoracion);
         valoracion.setOnRatingBarChangeListener(null);
         valoracion.setRating(lugar.getValoracion());
-        valoracion.setOnRatingBarChangeListener((rb, valor, fromUser) -> {
-            lugar.setValoracion(valor);
-            pos = lugares.actualizaPosLugar(pos, lugar);
-        });
+        if (soloLectura) {
+            valoracion.setIsIndicator(true);
+        } else {
+            valoracion.setIsIndicator(false);
+            valoracion.setOnRatingBarChangeListener((rb, valor, fromUser) -> {
+                lugar.setValoracion(valor);
+                pos = lugares.actualizaPosLugar(pos, lugar);
+            });
+        }
 
         // Foto
         usoLugar.visualizarFoto(lugar, foto);

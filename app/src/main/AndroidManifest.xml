@@ -14,9 +14,6 @@
         android:roundIcon="@mipmap/ic_mi_icono"
         android:supportsRtl="true"
         android:theme="@style/Theme.MisLugares.Fullscreen">
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
-
         <activity
             android:name=".presentacion.LoginActivity"
             android:exported="true"
@@ -57,6 +54,18 @@
         <activity
             android:name=".presentacion.RutaActivity"
             android:label="Ruta al lugar"
+            android:theme="@style/Theme.MisLugares.Fullscreen"/>
+        <activity
+            android:name=".presentacion.LugaresDeRutaActivity"
+            android:label="Lugares de la ruta"
+            android:theme="@style/Theme.MisLugares.Fullscreen"/>
+        <activity
+            android:name=".presentacion.EditarRutaActivity"
+            android:label="Editar ruta"
+            android:theme="@style/Theme.MisLugares.Fullscreen"/>
+        <activity
+            android:name=".presentacion.SeleccionarEnMapaActivity"
+            android:label="Elegir ubicación"
             android:theme="@style/Theme.MisLugares.Fullscreen"/>
         <provider
             android:authorities="com.example.misLugares.fileProvider"

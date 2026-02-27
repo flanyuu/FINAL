@@ -41,7 +41,7 @@ public class CasosUsoLocalizacion implements LocationListener {
         return (ActivityCompat.checkSelfPermission(actividad, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
     @SuppressLint("MissingPermission")
-    void ultimaLocalizacion(){
+    public void ultimaLocalizacion(){
         if (hayPermisoLocalizacion()) {
             if (manejadorLoc.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 actualizaMejorLocaliz(manejadorLoc.getLastKnownLocation(LocationManager.GPS_PROVIDER));
