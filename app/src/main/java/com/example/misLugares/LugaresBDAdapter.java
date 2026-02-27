@@ -25,7 +25,7 @@ public class LugaresBDAdapter extends LugaresBD {
     }
     @Override public void actualiza(int id, Lugar lugar) {
         super.actualiza(id, lugar);
-        adaptador.setCursor(extraeCursor());
+        adaptador.setCursor(extraeCursorCompleto());
         adaptador.notifyDataSetChanged();
     }
     public int actualizaPosLugar(int pos, Lugar lugar) {

@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("com.google.gms.google-services") // 🆕 Para Firebase
+    id("com.google.gms.google-services") 
 }
 
 android {
@@ -8,13 +8,15 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.misLugares"
+        applicationId = "com.example.loginapp"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GRAPHHOPPER_API_KEY", "\"API_KEY\"")
     }
 
     buildTypes {
@@ -33,6 +35,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -43,9 +46,8 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation("androidx.preference:preference:1.1.1")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
-
-    implementation("com.google.maps.android:android-maps-utils:3.8.2")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("org.osmdroid:osmdroid-android:6.1.18")
 
 
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))

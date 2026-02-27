@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardRuta"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="160dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="blocksDescendants"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp"
+    app:cardBackgroundColor="#F2F7FA">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:clickable="false"
+        android:focusable="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:minHeight="160dp"
+            android:clickable="false"
+            android:focusable="false">
+
+            <ImageView
+                android:id="@+id/imagenRuta"
+                android:layout_width="match_parent"
+                android:layout_height="132dp"
+                android:background="#D8EEF0"
+                android:contentDescription="Imagen de la ruta"
+                android:scaleType="centerCrop"
+                android:clickable="false"
+                android:focusable="false" />
+
+            <LinearLayout
+                android:id="@+id/contentInfo"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:orientation="vertical"
+                android:paddingStart="8dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="6dp"
+                android:clickable="false"
+                android:focusable="false">
+
+                <!-- Línea 1: solo el nombre -->
+                <TextView
+                    android:id="@+id/nombreRuta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-medium"
+                    android:maxLines="1"
+                    android:textColor="#1C2B3A"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:clickable="false"
+                    android:focusable="false" />
+
+                <!-- Línea 2: KM Valoración XXXXX -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:clickable="false"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:focusable="false"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="5dp"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="3dp">
+
+                    <TextView
+                        android:id="@+id/distanciaRuta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="#5BC8C8"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:text="  Valoración "
+                        android:textColor="#8B6914"
+                        android:textSize="9sp" />
+
+                    <RatingBar
+                        android:id="@+id/ratingBarRutaCard"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:isIndicator="true"
+                        android:minWidth="72dp"
+                        android:minHeight="20dp"
+                        android:numStars="5"
+                        android:progressTint="#FFC107"
+                        android:rating="0"
+                        android:secondaryProgressTint="#E0D080"
+                        android:stepSize="0.5" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</com.google.android.material.card.MaterialCardView>

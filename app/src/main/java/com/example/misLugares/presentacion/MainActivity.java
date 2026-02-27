@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import com.example.misLugares.casos_uso.RutasHelper;
 import com.example.misLugares.AdaptadorLugares;
 import com.example.misLugares.Aplicacion;
 import com.example.misLugares.CasosUsoLocalizacion;
@@ -22,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
@@ -88,8 +88,18 @@ public class MainActivity extends AppCompatActivity {
         adaptador = ((Aplicacion) getApplication()).adaptador;
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager lm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(lm);
         recyclerView.setAdapter(adaptador);
+        PagerSnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
+        int margin = (int) (getResources().getDisplayMetrics().density * 8);
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(android.graphics.Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                outRect.set(margin, margin, margin, margin);
+            }
+        });
         adaptador.setOnItemClickListener(new View.OnClickListener() {
            @Override public void onClick(View v) {
                int pos = (Integer)(v.getTag());
@@ -172,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESULTADO_PREFERENCIAS) {
-            adaptador.setCursor(lugares.extraeCursor());
+            adaptador.setCursor(lugares.extraeCursorCompleto());
             adaptador.notifyDataSetChanged();
         }
     }

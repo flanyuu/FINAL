@@ -1,9 +1,14 @@
 package com.example.misLugares.presentacion;
 
 import android.database.Cursor;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.misLugares.AdaptadorLugares;
+import com.example.misLugares.R;
 import com.example.misLugares.datos.LugaresBD;
 import com.example.misLugares.datos.RepositorioLugares;
 import com.example.misLugares.modelo.Lugar;
@@ -30,6 +35,15 @@ public class AdaptadorLugaresBD extends AdaptadorLugares {
             return cursor.getInt(0);
         else
             return -1;
+    }
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.elemento_lista, parent, false);
+        v.setLayoutParams(new RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        return new ViewHolder(v);
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int posicion) {

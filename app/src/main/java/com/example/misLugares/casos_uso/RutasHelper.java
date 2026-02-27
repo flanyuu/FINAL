@@ -1,102 +1,104 @@
 package com.example.misLugares.casos_uso;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.os.AsyncTask;
-import android.util.Log;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
+
+import com.example.misLugares.BuildConfig;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.osmdroid.util.GeoPoint;
+
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Helper para obtener rutas usando la API de GraphHopper.
+ * Las rutas se dibujan en el mapa OSM desde la actividad que llama.
+ */
 public class RutasHelper {
-    private static final String DIRECTIONS_API_KEY = "AIzaSyBD5Lj82jqqYX0bSuhXPTLUs_fS7PY2ylQ";
-    
-    public static void trazarRuta(Context context, LatLng origen, LatLng destino, GoogleMap mapa) {
-        String url = "https://maps.googleapis.com/maps/api/directions/json?" +
-                "origin=" + origen.latitude + "," + origen.longitude +
-                "&destination=" + destino.latitude + "," + destino.longitude +
-                "&key=" + DIRECTIONS_API_KEY;
-        
-        new ObtenerRutaTask(mapa).execute(url);
+
+    public interface RutasCallback {
+        void onRuta(List<GeoPoint> puntos);
+        void onError(String mensaje);
     }
-    
-    static class ObtenerRutaTask extends AsyncTask<String, Void, List<LatLng>> {
-        private GoogleMap mapa;
-        
-        ObtenerRutaTask(GoogleMap mapa) {
-            this.mapa = mapa;
-        }
-        
-        @Override
-        protected List<LatLng> doInBackground(String... urls) {
+
+    public static void trazarRuta(Context context, GeoPoint origen, GeoPoint destino, RutasCallback callback) {
+        String apiKey = BuildConfig.GRAPHHOPPER_API_KEY;
+        String url = "https://graphhopper.com/api/1/route?"
+                + "point=" + origen.getLatitude() + "," + origen.getLongitude()
+                + "&point=" + destino.getLatitude() + "," + destino.getLongitude()
+                + "&points_encoded=false"
+                + "&key=" + apiKey;
+
+        new Thread(() -> {
             try {
-                URL url = new URL(urls[0]);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                InputStream in = conn.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+                conn.setRequestMethod("GET");
+                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(15000);
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode != HttpURLConnection.HTTP_OK) {
+                    String err = "Error HTTP: " + responseCode;
+                    if (callback != null) {
+                        android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+                    handler.post(() -> callback.onError(err));
+                    }
+                    return;
+                }
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 StringBuilder json = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) json.append(line);
-                
-                JSONObject jsonObj = new JSONObject(json.toString());
-                JSONArray routes = jsonObj.getJSONArray("routes");
-                if (routes.length() > 0) {
-                    JSONObject route = routes.getJSONObject(0);
-                    JSONObject poly = route.getJSONObject("overview_polyline");
-                    String polyline = poly.getString("points");
-                    return decodePoly(polyline);
+                reader.close();
+                conn.disconnect();
+
+                List<GeoPoint> puntos = parseGraphHopperResponse(json.toString());
+                if (callback != null && puntos != null) {
+                    android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+                    handler.post(() -> callback.onRuta(puntos));
+                } else if (callback != null) {
+                    android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+                    handler.post(() -> callback.onError("No se encontraron rutas"));
                 }
             } catch (Exception e) {
-                Log.e("RutasHelper", "Error: " + e.getMessage());
+                if (callback != null) {
+                    String msg = e.getMessage() != null ? e.getMessage() : "Error de conexión";
+                    android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+                    handler.post(() -> callback.onError(msg));
+                }
             }
+        }).start();
+    }
+
+    static List<GeoPoint> parseGraphHopperResponse(String jsonString) {
+        try {
+            JSONObject jsonObj = new JSONObject(jsonString);
+            JSONArray paths = jsonObj.optJSONArray("paths");
+            if (paths == null || paths.length() == 0) return null;
+
+            JSONObject path = paths.getJSONObject(0);
+            Object pointsObj = path.get("points");
+            List<GeoPoint> puntos = new ArrayList<>();
+
+            if (pointsObj instanceof JSONObject) {
+                JSONObject pointsJson = (JSONObject) pointsObj;
+                JSONArray coords = pointsJson.getJSONArray("coordinates");
+                for (int i = 0; i < coords.length(); i++) {
+                    JSONArray c = coords.getJSONArray(i);
+                    double lon = c.getDouble(0);
+                    double lat = c.getDouble(1);
+                    puntos.add(new GeoPoint(lat, lon));
+                }
+            }
+            return puntos;
+        } catch (Exception e) {
             return null;
-        }
-        
-        @Override
-        protected void onPostExecute(List<LatLng> puntos) {
-            if (puntos != null && mapa != null) {
-                PolylineOptions lineOptions = new PolylineOptions()
-                        .addAll(puntos)
-                        .width(10)
-                        .color(Color.BLUE);
-                mapa.addPolyline(lineOptions);
-            }
-        }
-        
-        private List<LatLng> decodePoly(String encoded) {
-            List<LatLng> poly = new ArrayList<>();
-            int index = 0, len = encoded.length();
-            int lat = 0, lng = 0;
-            while (index < len) {
-                int b, shift = 0, result = 0;
-                do {
-                    b = encoded.charAt(index++) - 63;
-                    result |= (b & 0x1f) << shift;
-                    shift += 5;
-                } while (b >= 0x20);
-                int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-                lat += dlat;
-                shift = 0;
-                result = 0;
-                do {
-                    b = encoded.charAt(index++) - 63;
-                    result |= (b & 0x1f) << shift;
-                    shift += 5;
-                } while (b >= 0x20);
-                int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-                lng += dlng;
-                poly.add(new LatLng(lat / 1E5, lng / 1E5));
-            }
-            return poly;
         }
     }
 }

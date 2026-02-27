@@ -38,7 +38,7 @@ public class CasosUsoLugar {
     }
     public void borrar(int id) {
         lugares.borrar(id);
-        lugares.getAdaptador().setCursor(lugares.extraeCursor());
+        lugares.getAdaptador().setCursor(lugares.extraeCursorCompleto());
         lugares.getAdaptador().notifyDataSetChanged();
         actividad.finish();
     }
@@ -134,16 +134,8 @@ public class CasosUsoLugar {
         }
     }
     public void nuevo() {
-        int id = lugares.nuevo();
-        GeoPunto posicion = ((Aplicacion) actividad.getApplication())
-                .posicionActual;
-        if (!posicion.equals(GeoPunto.SIN_POSICION)) {
-            Lugar lugar = lugares.elemento(id);
-            lugar.setPosicion(posicion);
-            lugares.actualiza(id, lugar);
-        }
         Intent i = new Intent(actividad, EdicionLugarActivity.class);
-        i.putExtra("_id", id);
+        i.putExtra("_id", -1);
         actividad.startActivity(i);
     }
     public void borrarPos(int pos) {
