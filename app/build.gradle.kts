@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("com.google.gms.google-services") // 🆕 Para Firebase
+    id("com.google.gms.google-services") 
 }
 
 android {
@@ -16,7 +16,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "GRAPHHOPPER_API_KEY", "\"4849b4d9-8656-4f1e-bc29-f1f79f045f27\"")
+        buildConfigField("String", "GRAPHHOPPER_API_KEY", "\"API_KEY\"")
     }
 
     buildTypes {

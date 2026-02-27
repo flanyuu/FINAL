@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private static final String WEB_CLIENT_ID = "646797542044-sssh1qhj0uo21mbocrtvifv30eoq8bsb.apps.googleusercontent.com";
+    private static final String WEB_CLIENT_ID = "ID_GOOGLE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
